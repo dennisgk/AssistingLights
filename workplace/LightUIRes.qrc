@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>filter.svg</file>
+    <file>settings.svg</file>
+    <file>action.svg</file>
+    <file>home.svg</file>
+  </qresource>
+</RCC>
