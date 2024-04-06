@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'LightUI.ui'
+# Form implementation generated from reading ui file 'C:\Users\DennisK\Desktop\Projects\AssistingLights\workspace\LightUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -403,7 +403,7 @@ class Ui_MainWindow(object):
         self.procedure_scroll_area.setWidgetResizable(True)
         self.procedure_scroll_area.setObjectName("procedure_scroll_area")
         self.procedure_scroll_widgets = QtWidgets.QWidget()
-        self.procedure_scroll_widgets.setGeometry(QtCore.QRect(0, 0, 939, 600))
+        self.procedure_scroll_widgets.setGeometry(QtCore.QRect(0, 0, 157, 80))
         self.procedure_scroll_widgets.setStyleSheet("")
         self.procedure_scroll_widgets.setObjectName("procedure_scroll_widgets")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.procedure_scroll_widgets)
@@ -559,9 +559,6 @@ class Ui_MainWindow(object):
         self.run_page_title = QtWidgets.QLabel(self.run_page_header)
         self.run_page_title.setObjectName("run_page_title")
         self.verticalLayout_16.addWidget(self.run_page_title)
-        self.run_page_version = QtWidgets.QLabel(self.run_page_header)
-        self.run_page_version.setObjectName("run_page_version")
-        self.verticalLayout_16.addWidget(self.run_page_version)
         self.run_page_desc = QtWidgets.QLabel(self.run_page_header)
         self.run_page_desc.setObjectName("run_page_desc")
         self.verticalLayout_16.addWidget(self.run_page_desc)
@@ -572,7 +569,7 @@ class Ui_MainWindow(object):
         self.run_procedure_args_area.setWidgetResizable(True)
         self.run_procedure_args_area.setObjectName("run_procedure_args_area")
         self.args_scroll_area = QtWidgets.QWidget()
-        self.args_scroll_area.setGeometry(QtCore.QRect(0, 0, 939, 460))
+        self.args_scroll_area.setGeometry(QtCore.QRect(0, 0, 939, 480))
         self.args_scroll_area.setObjectName("args_scroll_area")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.args_scroll_area)
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
@@ -625,7 +622,6 @@ class Ui_MainWindow(object):
         self.args_select_box = QtWidgets.QComboBox(self.args_select_right_frame)
         self.args_select_box.setCurrentText("")
         self.args_select_box.setObjectName("args_select_box")
-        self.args_select_box.addItems(["test", "bruh", "check"])
         self.verticalLayout_21.addWidget(self.args_select_box)
         self.horizontalLayout_8.addWidget(self.args_select_right_frame)
         self.verticalLayout_19.addWidget(self.args_select_main_frame)
@@ -758,7 +754,6 @@ class Ui_MainWindow(object):
         self.how_to_label.setText(_translate("MainWindow", "Glory to Theta Chi Spring 24"))
         self.exit_app_button.setText(_translate("MainWindow", "Exit Application"))
         self.run_page_title.setText(_translate("MainWindow", "TextLabel"))
-        self.run_page_version.setText(_translate("MainWindow", "TextLabel"))
         self.run_page_desc.setText(_translate("MainWindow", "TextLabel"))
         self.args_select_title.setText(_translate("MainWindow", "TextLabel"))
         self.args_select_desc.setText(_translate("MainWindow", "TextLabel"))
@@ -776,11 +771,5 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-
-    ui.home_button.clicked.connect(lambda: ui.main_display_stack.setCurrentIndex(0))
-    ui.action_button.clicked.connect(lambda: ui.main_display_stack.setCurrentIndex(1))
-    ui.settings_button.clicked.connect(lambda: ui.main_display_stack.setCurrentIndex(2))
-
-
     MainWindow.show()
     sys.exit(app.exec_())
