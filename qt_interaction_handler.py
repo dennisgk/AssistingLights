@@ -1,8 +1,13 @@
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5 import QtCore
 
 def try_quit_application(app):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
+
+    msg.setWindowFlags(( QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint ) &~
+        ( QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowSystemMenuHint | 
+        QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowCloseButtonHint ))
 
     msg.setText("Are you sure you want to quit?")
     msg.setWindowTitle("Exit")
