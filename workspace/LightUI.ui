@@ -548,7 +548,7 @@ QPushButton:pressed {
              <number>0</number>
             </property>
             <property name="currentIndex">
-             <number>3</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="home_page">
              <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -664,8 +664,8 @@ p, li { white-space: pre-wrap; }
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>157</width>
-                   <height>80</height>
+                   <width>939</width>
+                   <height>600</height>
                   </rect>
                  </property>
                  <property name="styleSheet">
@@ -777,6 +777,8 @@ p, li { white-space: pre-wrap; }
                              <property name="font">
                               <font>
                                <pointsize>12</pointsize>
+                               <weight>75</weight>
+                               <bold>true</bold>
                               </font>
                              </property>
                              <property name="text">
@@ -1013,6 +1015,12 @@ QPushButton:pressed {
                 <layout class="QVBoxLayout" name="verticalLayout_16">
                  <item>
                   <widget class="QLabel" name="run_page_title">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>TextLabel</string>
                    </property>
@@ -1148,6 +1156,12 @@ QPushButton:pressed {
                           <layout class="QVBoxLayout" name="verticalLayout_20">
                            <item>
                             <widget class="QLabel" name="args_select_title">
+                             <property name="font">
+                              <font>
+                               <weight>75</weight>
+                               <bold>true</bold>
+                              </font>
+                             </property>
                              <property name="text">
                               <string>TextLabel</string>
                              </property>
@@ -1288,6 +1302,12 @@ QPushButton:pressed {
                           <layout class="QVBoxLayout" name="verticalLayout_17">
                            <item>
                             <widget class="QLabel" name="args_color_title">
+                             <property name="font">
+                              <font>
+                               <weight>75</weight>
+                               <bold>true</bold>
+                              </font>
+                             </property>
                              <property name="text">
                               <string>TextLabel</string>
                              </property>
