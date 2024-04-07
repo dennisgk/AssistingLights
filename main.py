@@ -4,10 +4,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import qt_interaction_handler
 import light_ui
 
-os.environ["QT_ENABLE_HIGHDPI_SCALING"]   = "1"
-os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-os.environ["QT_SCALE_FACTOR"]             = "1"
-
 def main():
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()

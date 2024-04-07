@@ -443,7 +443,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.procedure_sample_title = QtWidgets.QLabel(self.procedure_sample_left)
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(8)
         font.setBold(True)
         font.setWeight(75)
         self.procedure_sample_title.setFont(font)
