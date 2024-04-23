@@ -1,0 +1,6 @@
+CONST_EX_KEYWORD = "CONST"
+STATIC_EX_KEYWORD = "STATIC"
+DEFAULT_EX_KEYWORD = "DEFAULT"
+
+def setup_extensions(glo):
+    pass
