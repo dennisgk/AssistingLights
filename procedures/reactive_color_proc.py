@@ -1,15 +1,17 @@
+from PyQt5.QtGui import QColor
 
-def start():
-    pass
+def start(set_state, set_run):
+    set_state(None)
+    set_run(PROC_RUN_DOWNTIME, 100)
 
-def loop():
-    pass
+def loop(state, set_run):
+    set_run(PROC_RUN_DOWNTIME, 100)
 
-def stop():
+def stop(state):
     pass
 
 register_procedure("Reactive Color", "Changes the color based on sound", ["LETTER LIGHTS", "PERIMETER LIGHTS"])
-register_ex("Basic Ex")
+register_ex("Sound Listener")
 register_start(start)
 register_loop(loop)
 register_stop(stop)

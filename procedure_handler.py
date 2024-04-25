@@ -1,5 +1,9 @@
-from PyQt5.QtGui import QColor
 import os
+
+PROC_RUN_QUIT = "PROC_RUN_QUIT"
+PROC_RUN_DOWNTIME = "PROC_RUN_DOWNTIME"
+PROC_RUN_SUSPEND = "PROC_RUN_SUSPEND"
+PROC_RUN_IMMEDIATELY = "PROC_RUN_IMMEDIATELY"
 
 class LightsProcedure:
     def __init__(self, name, desc, domains, ex, start_fn, loop_fn, stop_fn, args):
@@ -12,20 +16,17 @@ class LightsProcedure:
         self.stop_fn = stop_fn
         self.args = args
 
-class LightsProcedureArg:
-    def __init__(self, name, desc):
+class LightsProcedureSelectArg():
+    def __init__(self, name, desc, select_options, select_def):
         self.name = name
         self.desc = desc
-
-class LightsProcedureSelectArg(LightsProcedureArg):
-    def __init__(self, name, desc, select_options, select_def):
-        super().__init__(name, desc)
         self.select_options = select_options
         self.select_def = select_def
 
-class LightsProcedureColorArg(LightsProcedureArg):
+class LightsProcedureColorArg():
     def __init__(self, name, desc, color_def):
-        super().__init__(name, desc)
+        self.name = name
+        self.desc = desc
         self.color_def = color_def
 
 class LightsProcedureBuilder:
@@ -72,14 +73,6 @@ def setup_procedures(glo):
     files = os.listdir(glo.procedures_dir)
     files = [f for f in files if f.endswith(".py") and os.path.isfile(os.path.join(glo.procedures_dir, f))]
 
-    # register_procedure - name, description, domains as []
-    # register_ex
-    # register_start
-    # register_loop
-    # register_stop
-    # register_color_arg - name, description, default_value
-    # register_select_arg - name, description, possible_values, default_value
-
     for file in files:
 
         builder = LightsProcedureBuilder()
@@ -96,7 +89,10 @@ def setup_procedures(glo):
             "register_stop": builder.register_stop,
             "register_color_arg": builder.register_color_arg,
             "register_select_arg": builder.register_select_arg,
-            "QColor": QColor
+            "PROC_RUN_QUIT": PROC_RUN_QUIT,
+            "PROC_RUN_DOWNTIME": PROC_RUN_DOWNTIME,
+            "PROC_RUN_SUSPEND": PROC_RUN_SUSPEND,
+            "PROC_RUN_IMMEDIATELY": PROC_RUN_IMMEDIATELY
         })
 
         try:
