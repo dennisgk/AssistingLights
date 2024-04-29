@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMessageBox, QColorDialog
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtCore import Qt
+from procedure_handler import LightsProcedureColorArg, LightsProcedureSelectArg
 
 def try_quit_application(glo):
     msg = QMessageBox()
@@ -19,8 +20,9 @@ def try_quit_application(glo):
     if(retVal == QMessageBox.Yes):
         glo.app.quit()
 
-def launch_color_dialog():
-    color = QColorDialog.getColor()
+def launch_color_dialog(color_def_callback, color_callback):
+    color = QColorDialog.getColor(color_def_callback())
+    color_callback(color)
 
 # needed to do is in script auto implement moving the creation logic, translation logic, and adding procedure_rows
 def generate_procedure_row(glo, proc):
@@ -100,38 +102,258 @@ def generate_procedure_row(glo, proc):
     verticalLayout_9.addWidget(procedure_sample_bottom_line)
     glo.ui.verticalLayout_8.addWidget(procedure_sample_row, 0, QtCore.Qt.AlignTop)
 
-    _translate = QtCore.QCoreApplication.translate
-
-    procedure_sample_title.setText(_translate("MainWindow", proc.name))
-    procedure_sample_desc.setText(_translate("MainWindow", proc.desc))
+    set_widget_text(procedure_sample_title, proc.name)
+    set_widget_text(procedure_sample_desc, proc.desc)
 
     procedure_sample_button.clicked.connect(lambda: set_page_config(glo, proc))
 
-    glo.ui.procedure_rows.append(procedure_sample_row)
+    return procedure_sample_row
 
 def set_page_home(glo):
+    remove_config_arg_rows_if_nec(glo)
     glo.ui.main_display_stack.setCurrentIndex(0)
 
 def set_page_action(glo):
+    remove_config_arg_rows_if_nec(glo)
     glo.ui.main_display_stack.setCurrentIndex(1)
 
 def set_page_settings(glo):
+    remove_config_arg_rows_if_nec(glo)
     glo.ui.main_display_stack.setCurrentIndex(2)
 
+def generate_color_arg_row(glo, arg):
+    num_id = len(glo.ui.config_arg_rows)
+
+    args_color_sample_row = QtWidgets.QFrame(glo.ui.args_scroll_area)
+    args_color_sample_row.setMinimumSize(QtCore.QSize(0, 80))
+    args_color_sample_row.setMaximumSize(QtCore.QSize(16777215, 80))
+    args_color_sample_row.setFrameShape(QtWidgets.QFrame.NoFrame)
+    args_color_sample_row.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_color_sample_row.setObjectName(f"args_color_sample_row_{num_id}")
+    verticalLayout_15 = QtWidgets.QVBoxLayout(args_color_sample_row)
+    verticalLayout_15.setContentsMargins(0, 0, 0, 0)
+    verticalLayout_15.setSpacing(0)
+    verticalLayout_15.setObjectName(f"verticalLayout_15_{num_id}")
+    args_color_sample_bottom_line = QtWidgets.QFrame(args_color_sample_row)
+    args_color_sample_bottom_line.setFrameShadow(QtWidgets.QFrame.Plain)
+    args_color_sample_bottom_line.setFrameShape(QtWidgets.QFrame.HLine)
+    args_color_sample_bottom_line.setObjectName(f"args_color_sample_bottom_line_{num_id}")
+    verticalLayout_15.addWidget(args_color_sample_bottom_line)
+    args_color_main_frame = QtWidgets.QFrame(args_color_sample_row)
+    args_color_main_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+    args_color_main_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_color_main_frame.setObjectName(f"args_color_main_frame_{num_id}")
+    horizontalLayout_7 = QtWidgets.QHBoxLayout(args_color_main_frame)
+    horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+    horizontalLayout_7.setSpacing(0)
+    horizontalLayout_7.setObjectName(f"horizontalLayout_7_{num_id}")
+    args_color_left_frame = QtWidgets.QFrame(args_color_main_frame)
+    args_color_left_frame.setFrameShape(QtWidgets.QFrame.NoFrame)
+    args_color_left_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_color_left_frame.setLineWidth(0)
+    args_color_left_frame.setObjectName(f"args_color_left_frame_{num_id}")
+    verticalLayout_17 = QtWidgets.QVBoxLayout(args_color_left_frame)
+    verticalLayout_17.setObjectName(f"verticalLayout_17_{num_id}")
+    args_color_title = QtWidgets.QLabel(args_color_left_frame)
+    font = QtGui.QFont()
+    font.setBold(True)
+    font.setWeight(75)
+    args_color_title.setFont(font)
+    args_color_title.setObjectName(f"args_color_title_{num_id}")
+    verticalLayout_17.addWidget(args_color_title)
+    args_color_desc = QtWidgets.QLabel(args_color_left_frame)
+    args_color_desc.setLineWidth(0)
+    args_color_desc.setObjectName(f"args_color_desc_{num_id}")
+    verticalLayout_17.addWidget(args_color_desc)
+    horizontalLayout_7.addWidget(args_color_left_frame)
+    args_color_right_frame = QtWidgets.QFrame(args_color_main_frame)
+    args_color_right_frame.setMaximumSize(QtCore.QSize(300, 16777215))
+    args_color_right_frame.setFrameShape(QtWidgets.QFrame.NoFrame)
+    args_color_right_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_color_right_frame.setLineWidth(0)
+    args_color_right_frame.setObjectName(f"args_color_right_frame_{num_id}")
+    verticalLayout_18 = QtWidgets.QVBoxLayout(args_color_right_frame)
+    verticalLayout_18.setObjectName(f"verticalLayout_18_{num_id}")
+    args_color_button = QtWidgets.QPushButton(args_color_right_frame)
+    args_color_button.setMinimumSize(QtCore.QSize(0, 30))
+    args_color_button.setStyleSheet("QPushButton {\n"
+"    border: none;\n"
+"    background-color: rgb(27, 29, 35);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"}")
+    args_color_button.setObjectName(f"args_color_button_{num_id}")
+    verticalLayout_18.addWidget(args_color_button)
+    args_color_preview = QtWidgets.QLabel(args_color_right_frame)
+    args_color_preview.setObjectName(f"args_color_preview_{num_id}")
+    verticalLayout_18.addWidget(args_color_preview)
+    horizontalLayout_7.addWidget(args_color_right_frame)
+    verticalLayout_15.addWidget(args_color_main_frame)
+    args_color_sample_top_line = QtWidgets.QFrame(args_color_sample_row)
+    args_color_sample_top_line.setFrameShadow(QtWidgets.QFrame.Plain)
+    args_color_sample_top_line.setFrameShape(QtWidgets.QFrame.HLine)
+    args_color_sample_top_line.setObjectName(f"args_color_sample_top_line_{num_id}")
+    verticalLayout_15.addWidget(args_color_sample_top_line)
+    glo.ui.verticalLayout_14.addWidget(args_color_sample_row, 0, QtCore.Qt.AlignTop)
+
+    set_widget_text(args_color_title, arg.name)
+    set_widget_text(args_color_desc, arg.desc)
+    set_widget_text(args_color_button, "Select Color")
+    set_widget_text(args_color_preview, f"rgb({arg.color_def.red()}, {arg.color_def.green()}, {arg.color_def.blue()})")
+
+    def color_callback(color):
+        glo.config_arg_passed[arg.name] = color
+        set_widget_text(args_color_preview, f"rgb({glo.config_arg_passed[arg.name].red()}, {glo.config_arg_passed[arg.name].green()}, {glo.config_arg_passed[arg.name].blue()})")
+
+    def color_def_callback():
+        return glo.config_arg_passed[arg.name]
+
+    args_color_button.clicked.connect(lambda: launch_color_dialog(color_def_callback, color_callback))
+
+    return args_color_sample_row
+
+def generate_select_arg_row(glo, arg):
+    num_id = len(glo.ui.config_arg_rows)
+
+    args_select_sample_row = QtWidgets.QFrame(glo.ui.args_scroll_area)
+    args_select_sample_row.setMinimumSize(QtCore.QSize(0, 80))
+    args_select_sample_row.setMaximumSize(QtCore.QSize(16777215, 80))
+    args_select_sample_row.setFrameShape(QtWidgets.QFrame.NoFrame)
+    args_select_sample_row.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_select_sample_row.setLineWidth(0)
+    args_select_sample_row.setObjectName(f"args_select_sample_row_{num_id}")
+    verticalLayout_19 = QtWidgets.QVBoxLayout(args_select_sample_row)
+    verticalLayout_19.setContentsMargins(0, 0, 0, 0)
+    verticalLayout_19.setSpacing(0)
+    verticalLayout_19.setObjectName(f"verticalLayout_19_{num_id}")
+    args_select_sample_top_line = QtWidgets.QFrame(args_select_sample_row)
+    args_select_sample_top_line.setFrameShadow(QtWidgets.QFrame.Plain)
+    args_select_sample_top_line.setFrameShape(QtWidgets.QFrame.HLine)
+    args_select_sample_top_line.setObjectName(f"args_select_sample_top_line_{num_id}")
+    verticalLayout_19.addWidget(args_select_sample_top_line)
+    args_select_main_frame = QtWidgets.QFrame(args_select_sample_row)
+    args_select_main_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+    args_select_main_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_select_main_frame.setObjectName(f"args_select_main_frame_{num_id}")
+    horizontalLayout_8 = QtWidgets.QHBoxLayout(args_select_main_frame)
+    horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
+    horizontalLayout_8.setSpacing(0)
+    horizontalLayout_8.setObjectName(f"horizontalLayout_8_{num_id}")
+    args_select_left_frame = QtWidgets.QFrame(args_select_main_frame)
+    args_select_left_frame.setFrameShape(QtWidgets.QFrame.NoFrame)
+    args_select_left_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_select_left_frame.setObjectName(f"args_select_left_frame_{num_id}")
+    verticalLayout_20 = QtWidgets.QVBoxLayout(args_select_left_frame)
+    verticalLayout_20.setObjectName(f"verticalLayout_20_{num_id}")
+    args_select_title = QtWidgets.QLabel(args_select_left_frame)
+    font = QtGui.QFont()
+    font.setBold(True)
+    font.setWeight(75)
+    args_select_title.setFont(font)
+    args_select_title.setObjectName(f"args_select_title_{num_id}")
+    verticalLayout_20.addWidget(args_select_title)
+    args_select_desc = QtWidgets.QLabel(args_select_left_frame)
+    args_select_desc.setObjectName(f"args_select_desc_{num_id}")
+    verticalLayout_20.addWidget(args_select_desc)
+    horizontalLayout_8.addWidget(args_select_left_frame)
+    args_select_right_frame = QtWidgets.QFrame(args_select_main_frame)
+    args_select_right_frame.setMaximumSize(QtCore.QSize(300, 16777215))
+    args_select_right_frame.setFrameShape(QtWidgets.QFrame.NoFrame)
+    args_select_right_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+    args_select_right_frame.setObjectName(f"args_select_right_frame_{num_id}")
+    verticalLayout_21 = QtWidgets.QVBoxLayout(args_select_right_frame)
+    verticalLayout_21.setObjectName(f"verticalLayout_21_{num_id}")
+    args_select_box = QtWidgets.QComboBox(args_select_right_frame)
+    args_select_box.setCurrentText("")
+    args_select_box.setObjectName(f"args_select_box_{num_id}")
+    verticalLayout_21.addWidget(args_select_box)
+    horizontalLayout_8.addWidget(args_select_right_frame)
+    verticalLayout_19.addWidget(args_select_main_frame)
+    args_select_sample_bottom_line = QtWidgets.QFrame(args_select_sample_row)
+    args_select_sample_bottom_line.setFrameShadow(QtWidgets.QFrame.Plain)
+    args_select_sample_bottom_line.setFrameShape(QtWidgets.QFrame.HLine)
+    args_select_sample_bottom_line.setObjectName(f"args_select_sample_bottom_line_{num_id}")
+    verticalLayout_19.addWidget(args_select_sample_bottom_line)
+    glo.ui.verticalLayout_14.addWidget(args_select_sample_row)
+
+    set_widget_text(args_select_title, arg.name)
+    set_widget_text(args_select_desc, arg.desc)
+
+    for option in arg.select_options:
+        args_select_box.addItem(option)
+
+    selected_index = 0
+    for x in range(0, len(arg.select_options)):
+        if(arg.select_options[x] == arg.select_def):
+            selected_index = x
+            break
+
+    args_select_box.setCurrentIndex(selected_index)
+
+    def on_current_index_changed(value):
+        glo.config_arg_passed[arg.name] = arg.select_options[value]
+
+    args_select_box.currentIndexChanged.connect(on_current_index_changed)
+
+    return args_select_sample_row
+
+def remove_config_arg_rows_if_nec(glo):
+    if(glo.ui.main_display_stack.currentIndex() != 3):
+        return
+    
+    glo.config_arg_passed = {}
+    glo.config_proc = None
+    
+    for arg in glo.ui.config_arg_rows:
+        glo.ui.verticalLayout_14.removeWidget(arg)
+
+def set_widget_text(widget, text):
+    _translate = QtCore.QCoreApplication.translate
+
+    widget.setText(_translate("MainWindow", text))
+
 def set_page_config(glo, proc):
-    # now setup the config page before switching
+
+    set_widget_text(glo.ui.run_page_title, proc.name)
+    set_widget_text(glo.ui.run_page_desc, proc.desc)
+
+    temp_arg_passed = {}
+
+    for arg in proc.args:
+        if isinstance(arg, LightsProcedureColorArg):
+            glo.ui.config_arg_rows.append(generate_color_arg_row(glo, arg))
+            temp_arg_passed[arg.name] = arg.color_def
+
+        if isinstance(arg, LightsProcedureSelectArg):
+            glo.ui.config_arg_rows.append(generate_select_arg_row(glo, arg))
+            temp_arg_passed[arg.name] = arg.select_def
+
+    glo.config_arg_passed = temp_arg_passed
+    glo.config_proc = proc
+
     glo.ui.main_display_stack.setCurrentIndex(3)
+
+def on_click_run_proc(glo):
+    glo.run_procedure(glo.config_proc, glo.config_arg_passed)
+
+    set_page_home(glo)
 
 def setup_ui(glo):
     glo.ui.home_button.clicked.connect(lambda: set_page_home(glo))
     glo.ui.action_button.clicked.connect(lambda: set_page_action(glo))
     glo.ui.settings_button.clicked.connect(lambda: set_page_settings(glo))
 
+    glo.ui.verticalLayout_14.setAlignment(Qt.AlignTop)
     glo.ui.verticalLayout_8.setAlignment(Qt.AlignTop)
 
     for proc in glo.procedures:
         glo.ui.procedure_rows.append(generate_procedure_row(glo, proc))
 
     glo.ui.exit_app_button.clicked.connect(lambda: try_quit_application(glo))
+    glo.ui.run_procedure_start_button.clicked.connect(lambda: on_click_run_proc(glo))
 
     set_page_home(glo)

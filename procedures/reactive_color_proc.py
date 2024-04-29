@@ -17,6 +17,7 @@ register_loop(loop)
 register_stop(stop)
 register_color_arg("Color arg", "Pick the color arg", QColor(255, 255, 255, 255))
 register_select_arg("Select arg", "Pick the select", ["Coors", "Busch"], "Coors")
+register_select_arg("Select arg 2", "Pick 2", ["Hell", "Yeah"], "Hell")
 
 del start
 del loop

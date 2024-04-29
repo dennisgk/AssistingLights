@@ -23,8 +23,12 @@ def main():
         MainWindow.show()
     else:
         MainWindow.showFullScreen()
+    
+    exitCode = app.exec_()
 
-    sys.exit(app.exec_())
+    glo.quit_background_dispatch()
+
+    sys.exit(exitCode)
 
 if __name__ == "__main__":
     main()
