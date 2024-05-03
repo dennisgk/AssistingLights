@@ -10,7 +10,7 @@ def loop(state, set_run):
 def stop(state):
     pass
 
-register_procedure("Reactive Color", "Changes the color based on sound", ["LETTER LIGHTS", "PERIMETER LIGHTS"])
+register_procedure("Reactive Color V1.0.0", "Changes the color based on sound", ["LETTER LIGHTS", "PERIMETER LIGHTS"])
 register_ex("Sound Listener")
 register_start(start)
 register_loop(loop)
@@ -22,3 +22,4 @@ register_select_arg("Select arg 2", "Pick 2", ["Hell", "Yeah"], "Hell")
 del start
 del loop
 del stop
+del QColor

@@ -6,7 +6,6 @@ EX_DEFAULT_KEYWORD = "DEFAULT"
 
 EX_RUN_DOWNTIME = "EX_RUN_DOWNTIME"
 EX_RUN_SUSPEND = "EX_RUN_SUSPEND"
-EX_RUN_IMMEDIATELY = "EX_RUN_IMMEDIATELY"
 
 class LightsExtension:
     def __init__(self, name, start_fn, loop_fn, stop_fn):
@@ -60,7 +59,6 @@ def setup_extensions(glo):
             "EX_DEFAULT_KEYWORD": EX_DEFAULT_KEYWORD,
             "EX_RUN_DOWNTIME": EX_RUN_DOWNTIME,
             "EX_RUN_SUSPEND": EX_RUN_SUSPEND,
-            "EX_RUN_IMMEDIATELY": EX_RUN_IMMEDIATELY
         })
 
         try:

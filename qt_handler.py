@@ -24,13 +24,15 @@ def launch_color_dialog(color_def_callback, color_callback):
     color = QColorDialog.getColor(color_def_callback())
     color_callback(color)
 
-# needed to do is in script auto implement moving the creation logic, translation logic, and adding procedure_rows
+def generate_procedure_desc(proc):
+    return f"{", ".join(proc.domains)}\n{proc.desc}"
+
 def generate_procedure_row(glo, proc):
     num_id = len(glo.ui.procedure_rows)
 
     procedure_sample_row = QtWidgets.QFrame(glo.ui.procedure_scroll_widgets)
     procedure_sample_row.setMinimumSize(QtCore.QSize(0, 80))
-    procedure_sample_row.setMaximumSize(QtCore.QSize(16777215, 80))
+    procedure_sample_row.setMaximumSize(QtCore.QSize(16777215, 16777215))
     procedure_sample_row.setStyleSheet("")
     procedure_sample_row.setFrameShape(QtWidgets.QFrame.NoFrame)
     procedure_sample_row.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -50,7 +52,7 @@ def generate_procedure_row(glo, proc):
     procedure_sample_content.setFrameShadow(QtWidgets.QFrame.Raised)
     procedure_sample_content.setObjectName(f"procedure_sample_content_{num_id}")
     horizontalLayout_4 = QtWidgets.QHBoxLayout(procedure_sample_content)
-    horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+    horizontalLayout_4.setContentsMargins(0, 0, 9, 0)
     horizontalLayout_4.setSpacing(0)
     horizontalLayout_4.setObjectName(f"horizontalLayout_4_{num_id}")
     procedure_sample_left = QtWidgets.QFrame(procedure_sample_content)
@@ -67,6 +69,7 @@ def generate_procedure_row(glo, proc):
     verticalLayout_10.addWidget(procedure_sample_title)
     procedure_sample_desc = QtWidgets.QLabel(procedure_sample_left)
     procedure_sample_desc.setObjectName(f"procedure_sample_desc_{num_id}")
+    procedure_sample_desc.setWordWrap(True)
     verticalLayout_10.addWidget(procedure_sample_desc)
     horizontalLayout_4.addWidget(procedure_sample_left)
     procedure_sample_button = QtWidgets.QPushButton(procedure_sample_content)
@@ -103,7 +106,7 @@ def generate_procedure_row(glo, proc):
     glo.ui.verticalLayout_8.addWidget(procedure_sample_row, 0, QtCore.Qt.AlignTop)
 
     set_widget_text(procedure_sample_title, proc.name)
-    set_widget_text(procedure_sample_desc, proc.desc)
+    set_widget_text(procedure_sample_desc, generate_procedure_desc(proc))
 
     procedure_sample_button.clicked.connect(lambda: set_page_config(glo, proc))
 
@@ -305,7 +308,7 @@ def remove_config_arg_rows_if_nec(glo):
     if(glo.ui.main_display_stack.currentIndex() != 3):
         return
     
-    glo.config_arg_passed = {}
+    glo.config_arg_passed = None
     glo.config_proc = None
     
     for arg in glo.ui.config_arg_rows:
@@ -319,7 +322,7 @@ def set_widget_text(widget, text):
 def set_page_config(glo, proc):
 
     set_widget_text(glo.ui.run_page_title, proc.name)
-    set_widget_text(glo.ui.run_page_desc, proc.desc)
+    set_widget_text(glo.ui.run_page_desc, generate_procedure_desc(proc))
 
     temp_arg_passed = {}
 

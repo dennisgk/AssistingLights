@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1024, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("color: rgb(210, 210, 210);")
+        self.centralwidget.setStyleSheet("color: #FAFAFA;")
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -372,8 +372,21 @@ class Ui_MainWindow(object):
         self.light_controller_label.setFont(font)
         self.light_controller_label.setObjectName("light_controller_label")
         self.verticalLayout_5.addWidget(self.light_controller_label)
-        self.info_tree_view = QtWidgets.QTreeView(self.procedure_info)
+        self.info_tree_view = QtWidgets.QTreeWidget(self.procedure_info)
+        self.info_tree_view.setStyleSheet("QHeaderView::section {                          \n"
+"    color: #FAFAFA;                               \n"
+"    padding: 2px;                               \n"
+"    height:20px;                                \n"
+"    border: 0px solid #567dbc;                  \n"
+"    border-left:0px;                            \n"
+"    border-right:0px;                           \n"
+"    background: rgb(27, 29, 35);\n"
+"}")
+        self.info_tree_view.setColumnCount(3)
         self.info_tree_view.setObjectName("info_tree_view")
+        self.info_tree_view.headerItem().setText(0, "1")
+        self.info_tree_view.headerItem().setText(1, "2")
+        self.info_tree_view.headerItem().setText(2, "3")
         self.verticalLayout_5.addWidget(self.info_tree_view)
         self.horizontalLayout_3.addWidget(self.procedure_info)
         self.output_info = QtWidgets.QFrame(self.home_page)
@@ -575,7 +588,7 @@ class Ui_MainWindow(object):
         self.run_procedure_args_area.setWidgetResizable(True)
         self.run_procedure_args_area.setObjectName("run_procedure_args_area")
         self.args_scroll_area = QtWidgets.QWidget()
-        self.args_scroll_area.setGeometry(QtCore.QRect(0, 0, 939, 480))
+        self.args_scroll_area.setGeometry(QtCore.QRect(0, 0, 155, 160))
         self.args_scroll_area.setObjectName("args_scroll_area")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.args_scroll_area)
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
@@ -751,7 +764,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.main_display_stack.setCurrentIndex(1)
+        self.main_display_stack.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

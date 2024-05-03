@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         self.config_arg_rows = []
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet("color: rgb(210, 210, 210);")
+        self.centralwidget.setStyleSheet("color: #FAFAFA;")
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -376,8 +376,20 @@ class Ui_MainWindow(object):
         self.light_controller_label.setFont(font)
         self.light_controller_label.setObjectName("light_controller_label")
         self.verticalLayout_5.addWidget(self.light_controller_label)
-        self.info_tree_view = QtWidgets.QTreeView(self.procedure_info)
+        self.info_tree_view = QtWidgets.QTreeWidget(self.procedure_info)
+        self.info_tree_view.setStyleSheet("QHeaderView::section {                          \n"
+"    color: #FAFAFA;                               \n"
+"    padding: 2px;                               \n"
+"    height:20px;                                \n"
+"    border: 0px solid #567dbc;                  \n"
+"    border-left:0px;                            \n"
+"    border-right:0px;                           \n"
+"    background: rgb(27, 29, 35);\n"
+"}")
+        self.info_tree_view.setColumnCount(2)
         self.info_tree_view.setObjectName("info_tree_view")
+        self.info_tree_view.headerItem().setText(0, "1")
+        self.info_tree_view.headerItem().setText(1, "2")
         self.verticalLayout_5.addWidget(self.info_tree_view)
         self.horizontalLayout_3.addWidget(self.procedure_info)
         self.output_info = QtWidgets.QFrame(self.home_page)
@@ -496,6 +508,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.addWidget(self.run_page_title)
         self.run_page_desc = QtWidgets.QLabel(self.run_page_header)
         self.run_page_desc.setObjectName("run_page_desc")
+        self.run_page_desc.setWordWrap(True)
         self.verticalLayout_16.addWidget(self.run_page_desc)
         self.verticalLayout_13.addWidget(self.run_page_header)
         self.run_procedure_args_area = QtWidgets.QScrollArea(self.run_page)

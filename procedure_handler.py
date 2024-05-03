@@ -3,7 +3,11 @@ import os
 PROC_RUN_QUIT = "PROC_RUN_QUIT"
 PROC_RUN_DOWNTIME = "PROC_RUN_DOWNTIME"
 PROC_RUN_SUSPEND = "PROC_RUN_SUSPEND"
-PROC_RUN_IMMEDIATELY = "PROC_RUN_IMMEDIATELY"
+
+class LightsProcedureInitializeEvent():
+    def __init__(self, proc, args):
+        self.proc = proc
+        self.args = args
 
 class LightsProcedure:
     def __init__(self, name, desc, domains, ex, start_fn, loop_fn, stop_fn, args):
@@ -91,8 +95,7 @@ def setup_procedures(glo):
             "register_select_arg": builder.register_select_arg,
             "PROC_RUN_QUIT": PROC_RUN_QUIT,
             "PROC_RUN_DOWNTIME": PROC_RUN_DOWNTIME,
-            "PROC_RUN_SUSPEND": PROC_RUN_SUSPEND,
-            "PROC_RUN_IMMEDIATELY": PROC_RUN_IMMEDIATELY
+            "PROC_RUN_SUSPEND": PROC_RUN_SUSPEND
         })
 
         try:

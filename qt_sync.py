@@ -27,7 +27,10 @@ class SyncWaiter():
 
         self.var_mutex.acquire()
         if(len(self.var) > 0):
-            return self.var[0]
+            ret_val = self.var[0]
+            self.var.pop(0)
+            self.var_mutex.release()
+            return ret_val
         
         self.var_mutex.release()
 
@@ -36,12 +39,35 @@ class SyncWaiter():
             return None
         
         self.var_mutex.acquire()
-
-        return self.var[0]
-
-    def release_var(self):
+        ret_val = self.var[0]
         self.var.pop(0)
         self.var_mutex.release()
+        
+        return ret_val
+
+    def remove_where(self, where_callback):
+        self.downtime_var_mutex.acquire()
+        self.var_mutex.acquire()
+
+        rem_var_list = []
+        rem_downtime_var_list = []
+
+        for x in range(0, len(self.var)):
+            if(where_callback(self.var[x])):
+                rem_var_list.append(self.var[x])
+
+        for x in range(0, len(self.downtime_var)):
+            if(where_callback(self.downtime_var[x][1])):
+                rem_downtime_var_list.append(self.downtime_var[x])
+
+        for x in rem_var_list:
+            self.var.remove(x)
+
+        for x in rem_downtime_var_list:
+            self.downtime_var.remove(x)
+
+        self.var_mutex.release()
+        self.downtime_var_mutex.release()
 
     def set(self, v):
         if(self.has_quit()):
@@ -58,7 +84,18 @@ class SyncWaiter():
             return
         
         self.downtime_var_mutex.acquire()
-        self.downtime_var.append((self.elapsed_millis() + millis, v))
+
+        val_insert = (self.elapsed_millis() + millis, v)
+        was_inserted = False
+        for x in range(0, len(self.downtime_var)):
+            if(val_insert[0] < self.downtime_var[x][0]):
+                self.downtime_var.insert(x, val_insert)
+                was_inserted = True
+                break
+
+        if(not was_inserted):
+            self.downtime_var.append(val_insert)
+        
         self.downtime_var_mutex.release()
         self.downtime_var_event.set()
         self.downtime_var_event.clear()
@@ -76,46 +113,49 @@ class SyncWaiter():
         self.downtime_var_event.set()
         self.downtime_var_event.clear()
 
-    def downtime_waiter(self):
+    def downtime_next_millis(self):
+        self.downtime_var_mutex.acquire()
 
-        ordered_waitings = []
+        timeout_millis = None
+        if(len(self.downtime_var) > 0):
+            timeout_millis = self.downtime_var[0][0] - self.elapsed_millis()
+        
+        self.downtime_var_mutex.release()
+
+        return timeout_millis
+
+    def downtime_waiter(self):
 
         while True:
             if(self.has_quit()):
                 break
 
-            if(len(ordered_waitings) > 0):
-                is_event_set = self.downtime_var_event.wait((ordered_waitings[0][0] - self.elapsed_millis()) * 0.001)
-                if(self.has_quit()):
-                    break
+            timeout_millis = self.downtime_next_millis()
 
-                if(is_event_set):
-                    self.downtime_var_mutex.acquire()
-                    ordered_waitings.extend(self.downtime_var)
-                    ordered_waitings.sort(key = lambda x: x[0])
-
-                    self.downtime_var = []
-                    self.downtime_var_mutex.release()
-            else:
+            while(timeout_millis == None):
                 self.downtime_var_event.wait()
                 if(self.has_quit()):
                     break
 
-                self.downtime_var_mutex.acquire()
-                ordered_waitings = self.downtime_var
-                ordered_waitings.sort(key = lambda x: x[0])
+                timeout_millis = self.downtime_next_millis()
+            
+            if(timeout_millis != None and timeout_millis > 0):
+                self.downtime_var_event.wait(timeout_millis * 0.001)
+                if(self.has_quit()):
+                    break
 
-                self.downtime_var = []
-                self.downtime_var_mutex.release()
+            self.downtime_var_mutex.acquire()
 
-            del_ordered_index = len(ordered_waitings)
+            del_ordered_index = len(self.downtime_var)
 
-            for x in range(0, len(ordered_waitings)):
-                if(self.elapsed_millis() >= ordered_waitings[x][0]):
-                    self.set(ordered_waitings[x][1])
+            for x in range(0, len(self.downtime_var)):
+                if(self.elapsed_millis() >= self.downtime_var[x][0]):
+                    self.set(self.downtime_var[x][1])
                 else:
                     del_ordered_index = x
                     break
 
             for x in range(0, del_ordered_index):
-                ordered_waitings.pop(0)
+                self.downtime_var.pop(0)
+
+            self.downtime_var_mutex.release()
