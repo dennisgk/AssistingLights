@@ -27,9 +27,12 @@ def start(set_state, set_run):
 # SET MUST BE CALLED
 def loop(state, set_run):
     try:
+        available_read = state["stream"].get_read_available()
+        if(available_read > state["frames_per_buffer"]):
+            state["stream"].read(available_read - state["frames_per_buffer"], exception_on_overflow=False)
+
         y = np.fromstring(state["stream"].read(state["frames_per_buffer"], exception_on_overflow=False), dtype=np.int16)
         y = y.astype(np.float32)
-        state["stream"].read(state["stream"].get_read_available(), exception_on_overflow=False)
         
         db = 20 * np.log10(np.sqrt(np.mean(np.abs(y) ** 2)))
         if(math.isfinite(db)):
