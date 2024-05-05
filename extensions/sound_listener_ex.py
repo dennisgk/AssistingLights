@@ -37,7 +37,9 @@ def loop(state, set_run):
         state["overflows"] += 1
         if time.time() > state["prev_ovf_time"] + 1:
             state["prev_ovf_time"] = time.time()
-            print(f"Audio buffer has overflowed {state["overflows"]} times.")
+
+            num_overflows = state["overflows"]
+            print(f"Audio buffer has overflowed {num_overflows} times.")
 
     set_run(EX_RUN_DOWNTIME, state["FPS"])
 
