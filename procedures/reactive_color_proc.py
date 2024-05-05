@@ -15,6 +15,15 @@ if os.name == "nt":
         def fill(*args):
             pass
 
+        def Color(*args):
+            pass
+
+        def setPixelColor(*args):
+            pass
+
+        def show(*args):
+            pass
+
     strip_control = StripControlImitator()
 else:
     import rpi_ws281x
@@ -36,7 +45,9 @@ def start(set_state, set_run, args, ex):
     state["strip"] = strip_control.Adafruit_NeoPixel(state["LED_COUNT"], state["LED_PIN"], state["LED_FREQ_HZ"], state["LED_DMA"], state["LED_INVERT"], state["LED_BRIGHTNESS"], state["LED_CHANNEL"])
     state["strip"].begin()
 
-    state["strip"].fill((args["Color arg"].red(), args["Color arg"].green(), args["Color arg"].blue()))
+    for x in range(0, 30):
+        state["strip"].setPixelColor(x, strip_control.Color(args["Color arg"].red(), args["Color arg"].green(), args["Color arg"].blue()))
+    state["strip"].show()
 
     set_state(state)
     set_run(PROC_RUN_DOWNTIME, 1000)
