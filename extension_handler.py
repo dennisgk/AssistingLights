@@ -67,17 +67,20 @@ def setup_extensions(glo):
         with open(os.path.join(glo.extensions_dir, file), "r") as stream:
             fileText = stream.read()
 
-        exec(fileText, {
-            "register_ex": builder.register_ex,
-            "register_start": builder.register_start,
-            "register_loop": builder.register_loop,
-            "register_stop": builder.register_stop,
-            "register_keyword": builder.register_keyword,
-            "EX_STATIC_KEYWORD": EX_STATIC_KEYWORD,
-            "EX_DEFAULT_KEYWORD": EX_DEFAULT_KEYWORD,
-            "EX_RUN_DOWNTIME": EX_RUN_DOWNTIME,
-            "EX_RUN_SUSPEND": EX_RUN_SUSPEND,
-        })
+        def exec_scope():
+            exec(fileText, {
+                "register_ex": builder.register_ex,
+                "register_start": builder.register_start,
+                "register_loop": builder.register_loop,
+                "register_stop": builder.register_stop,
+                "register_keyword": builder.register_keyword,
+                "EX_STATIC_KEYWORD": EX_STATIC_KEYWORD,
+                "EX_DEFAULT_KEYWORD": EX_DEFAULT_KEYWORD,
+                "EX_RUN_DOWNTIME": EX_RUN_DOWNTIME,
+                "EX_RUN_SUSPEND": EX_RUN_SUSPEND,
+            })
+
+        exec_scope()
 
         try:
             ex = builder.build()

@@ -93,18 +93,21 @@ def setup_procedures(glo):
         with open(os.path.join(glo.procedures_dir, file), "r") as stream:
             fileText = stream.read()
 
-        exec(fileText, {
-            "register_procedure": builder.register_procedure,
-            "register_ex": builder.register_ex,
-            "register_start": builder.register_start,
-            "register_loop": builder.register_loop,
-            "register_stop": builder.register_stop,
-            "register_color_arg": builder.register_color_arg,
-            "register_select_arg": builder.register_select_arg,
-            "PROC_RUN_QUIT": PROC_RUN_QUIT,
-            "PROC_RUN_DOWNTIME": PROC_RUN_DOWNTIME,
-            "PROC_RUN_SUSPEND": PROC_RUN_SUSPEND
-        })
+        def exec_scope():
+            exec(fileText, {
+                "register_procedure": builder.register_procedure,
+                "register_ex": builder.register_ex,
+                "register_start": builder.register_start,
+                "register_loop": builder.register_loop,
+                "register_stop": builder.register_stop,
+                "register_color_arg": builder.register_color_arg,
+                "register_select_arg": builder.register_select_arg,
+                "PROC_RUN_QUIT": PROC_RUN_QUIT,
+                "PROC_RUN_DOWNTIME": PROC_RUN_DOWNTIME,
+                "PROC_RUN_SUSPEND": PROC_RUN_SUSPEND
+            })
+        
+        exec_scope()
 
         try:
             proc = builder.build()
