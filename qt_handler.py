@@ -26,7 +26,8 @@ def launch_color_dialog(color_def_callback, color_callback):
     color_callback(color)
 
 def generate_procedure_desc(proc):
-    return f"{", ".join(proc.domains)}\n{proc.desc}"
+    domain_str = ", ".join(proc.domains)
+    return f"{domain_str}\n{proc.desc}"
 
 def generate_procedure_row(glo, proc):
     num_id = len(glo.ui.procedure_rows)
