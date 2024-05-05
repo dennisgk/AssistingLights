@@ -148,7 +148,7 @@ def start_proc_all_ex(glo, proc):
         
         def ex_set_run(*args):
             ex_run.extend(args)
-        
+
         ex.start_fn(ex_set_state, ex_set_run)
 
         if len(ex_run) > 0:
@@ -174,20 +174,8 @@ def handle_background_event(glo, ev, update_ui):
                 "domain shared with another procedure running. Stop the other procedure first."))
             return
 
-        # setup extensions
+        # add and setup extensions
 
-        start_proc_all_ex(glo, ev.proc)
-
-        # run the procedure
-
-        proc_run = []
-        
-        def proc_set_state(state):
-            glo.proc_states[ev.proc] = state
-        
-        def proc_set_run(*args):
-            proc_run.extend(args)
-            
         def on_proc_debug():
             debug_obj = {}
             debug_obj["Procedure State"] = glo.proc_states[ev.proc]
@@ -203,7 +191,20 @@ def handle_background_event(glo, ev, update_ui):
             glo.background_dispatch_loop.set(LightsProcedureStopEvent(ev.proc))
 
         update_ui(lambda: add_tree_row(glo, ev.proc, on_proc_debug, on_proc_stop))
-        ev.proc.start_fn(proc_set_state, proc_set_run, get_extensions_object(glo, ev.proc))
+
+        start_proc_all_ex(glo, ev.proc)
+
+        # run the procedure
+
+        proc_run = []
+        
+        def proc_set_state(state):
+            glo.proc_states[ev.proc] = state
+        
+        def proc_set_run(*args):
+            proc_run.extend(args)
+            
+        ev.proc.start_fn(proc_set_state, proc_set_run, ev.args, get_extensions_object(glo, ev.proc))
 
         if len(proc_run) > 0:
             if(proc_run[0] == PROC_RUN_QUIT):

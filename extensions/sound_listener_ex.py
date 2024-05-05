@@ -5,24 +5,24 @@ import numpy as np
 
 # ALL 2 SETS MUST BE CALLED
 def start(set_state, set_run):
-    st = {}
+    state = {}
 
-    st["p"] = pyaudio.PyAudio()
-    st["DEF_INFO"] = st["p"].get_default_input_device_info()
-    st["FPS"] = 300
-    st["frames_per_buffer"] = 1024
+    state["p"] = pyaudio.PyAudio()
+    state["DEF_INFO"] = state["p"].get_default_input_device_info()
+    state["FPS"] = 100
+    state["frames_per_buffer"] = 1024
 
-    st["stream"] = st["p"].open(format=pyaudio.paInt16,
-                    input_device_index=int(st["DEF_INFO"]["index"]),
+    state["stream"] = state["p"].open(format=pyaudio.paInt16,
+                    input_device_index=int(state["DEF_INFO"]["index"]),
                     channels=1,
-                    rate=int(st["DEF_INFO"]["defaultSampleRate"]),
+                    rate=int(state["DEF_INFO"]["defaultSampleRate"]),
                     input=True,
-                    frames_per_buffer=st["frames_per_buffer"])
+                    frames_per_buffer=state["frames_per_buffer"])
 
-    st["db"] = 0
+    state["db"] = 0
 
-    set_state(st)
-    set_run(EX_RUN_DOWNTIME, st["FPS"])
+    set_state(state)
+    set_run(EX_RUN_DOWNTIME, state["FPS"])
 
 # SET MUST BE CALLED
 def loop(state, set_run):

@@ -1,12 +1,45 @@
 from PyQt5.QtGui import QColor
+import time
+import os
+
+strip_control = None
+
+if os.name == "nt":
+    class StripControlImitator:
+        def Adafruit_NeoPixel(*args):
+            return StripControlImitator()
+        
+        def begin(*args):
+            pass
+
+        def fill(*args):
+            pass
+
+    strip_control = StripControlImitator()
+else:
+    import ws281x
+    strip_control = ws281x
 
 # set_state MUST BE CALLED
 # set_run MUST BE CALLED
-def start(set_state, set_run, ex):
-    set_state(None)
-    set_run(PROC_RUN_DOWNTIME, 1000)
+def start(set_state, set_run, args, ex):
+    state = {}
 
-    print(ex)
+    state["LED_COUNT"] = 30
+    state["LED_PIN"] = 18
+    state["LED_FREQ_HZ"] = 800000
+    state["LED_DMA"] = 10
+    state["LED_BRIGHTNESS"] = 255
+    state["LED_INVERT"] = False
+    state["LED_CHANNEL"] = 0
+
+    state["strip"] = strip_control.Adafruit_NeoPixel(state["LED_COUNT"], state["LED_PIN"], state["LED_FREQ_HZ"], state["LED_DMA"], state["LED_INVERT"], state["LED_BRIGHTNESS"], state["LED_CHANNEL"])
+    state["strip"].begin()
+
+    state["strip"].fill((args["Color arg"].red(), args["Color arg"].green(), args["Color arg"].blue()))
+
+    set_state(state)
+    set_run(PROC_RUN_DOWNTIME, 1000)
 
 # set_run MUST BE CALLED
 def loop(state, set_run, ex):
@@ -14,8 +47,7 @@ def loop(state, set_run, ex):
     #print("LOOPED PROC")
 
 def stop(state, ex):
-    #print("STOPPED PROC")
-    pass
+    state["strip"].fill((0, 0, 0))
 
 # LETTER LIGHTS AND PERIMETER LIGHTS ARE THE DOMAINS
 register_procedure("Reactive Color V1.0.0", "Changes the color based on sound", ["LL", "PL"])
