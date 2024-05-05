@@ -11,15 +11,13 @@ def write_to_error(glo, text):
     glo.ui.output_text_edit.insertHtml(f"<span style=\"background-color:#f5060f;color:#fafafa;\">{text}</span><br />")
 
 def remove_tree_row(glo, proc):
-    target_index = 0
-
+    
     for x in range(0, glo.ui.info_tree_view.topLevelItemCount()):
         if glo.ui.info_tree_view.topLevelItem(x).data(0, 0) != proc:
             continue
 
-        target_index = x
+        glo.ui.info_tree_view.takeTopLevelItem(x)
 
-    glo.ui.info_tree_view.takeTopLevelItem(target_index)
 
 def add_tree_row(glo, proc, debug_callback, stop_callback):
     row_root = QTreeWidgetItem(glo.ui.info_tree_view)
@@ -100,7 +98,10 @@ def get_extensions_object(glo, proc):
     return ex_list
 
 def stop_proc(glo, proc):
+    glo.background_dispatch_loop.remove_where(lambda x: (isinstance(x, LightsProcedureLoopEvent) and x.proc == proc) or \
+                                            (isinstance(x, LightsProcedureStopEvent) and x.proc == proc))
     proc.stop_fn(glo.proc_states[proc], get_extensions_object(glo, proc))
+    
     stop_proc_all_ex(glo, proc)
     glo.proc_states.pop(proc, None)
 
@@ -186,36 +187,35 @@ def handle_background_event(glo, ev, update_ui):
         
         def proc_set_run(*args):
             proc_run.extend(args)
+            
+        def on_proc_debug():
+            debug_obj = {}
+            debug_obj["Procedure State"] = glo.proc_states[ev.proc]
+            debug_obj["Extension States"] = {}
 
+            debug_ex_obj = get_extensions_object(glo, ev.proc)
+            for ex_key in debug_ex_obj:
+                debug_obj["Extension States"][ex_key] = debug_ex_obj[ex_key]
+
+            write_to_output(glo, str(debug_obj))
+
+        def on_proc_stop():
+            glo.background_dispatch_loop.set(LightsProcedureStopEvent(ev.proc))
+
+        update_ui(lambda: add_tree_row(glo, ev.proc, on_proc_debug, on_proc_stop))
         ev.proc.start_fn(proc_set_state, proc_set_run, get_extensions_object(glo, ev.proc))
 
         if len(proc_run) > 0:
             if(proc_run[0] == PROC_RUN_QUIT):
-                stop_proc(glo, ev.proc)
-                return
-            
-            def on_proc_debug():
-                debug_obj = {}
-                debug_obj["Procedure State"] = glo.proc_states[ev.proc]
-                debug_obj["Extension States"] = {}
-
-                debug_ex_obj = get_extensions_object(glo, ev.proc)
-                for ex_key in debug_ex_obj:
-                    debug_obj["Extension States"][ex_key] = debug_ex_obj[ex_key]
-
-                write_to_output(glo, str(debug_obj))
-
-            def on_proc_stop():
-                glo.background_dispatch_loop.remove_where(lambda x: isinstance(x, LightsProcedureLoopEvent) and x.proc == ev.proc)
+                update_ui(lambda: write_to_error(f"Procedure <b>{ev.proc.name}</b> quit itself."))
                 glo.background_dispatch_loop.set(LightsProcedureStopEvent(ev.proc))
+                return
 
             if(proc_run[0] == PROC_RUN_DOWNTIME):
-                update_ui(lambda: add_tree_row(glo, ev.proc, on_proc_debug, on_proc_stop))
                 glo.background_dispatch_loop.set_downtime(LightsProcedureLoopEvent(ev.proc), proc_run[1])
                 return
 
             if(proc_run[0] == PROC_RUN_SUSPEND):
-                update_ui(lambda: add_tree_row(glo, ev.proc, on_proc_debug, on_proc_stop))
                 return
             
         return
@@ -230,7 +230,8 @@ def handle_background_event(glo, ev, update_ui):
             
         if len(proc_run) > 0:
             if(proc_run[0] == PROC_RUN_QUIT):
-                stop_proc(glo, ev.proc)
+                update_ui(lambda: write_to_error(f"Procedure <b>{ev.proc.name}</b> quit itself."))
+                glo.background_dispatch_loop.set(LightsProcedureStopEvent(ev.proc))
                 return
 
             if(proc_run[0] == PROC_RUN_DOWNTIME):

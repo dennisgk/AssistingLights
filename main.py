@@ -5,6 +5,7 @@ import qt_handler
 import light_ui
 import procedure_handler
 import extension_handler
+from background_event_handler import stop_proc
 from lights_global_state import LightsGlobalState
 
 def main():
@@ -25,6 +26,11 @@ def main():
         MainWindow.showFullScreen()
     
     exitCode = app.exec_()
+
+    proc_states_copy = [proc for proc in glo.proc_states]
+
+    for proc_key in proc_states_copy:
+        stop_proc(glo, proc_key)
 
     glo.quit_background_dispatch()
 

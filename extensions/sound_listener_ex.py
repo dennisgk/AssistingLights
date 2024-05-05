@@ -1,27 +1,25 @@
+import pyaudio
+import math
 import time
 import numpy as np
-import pyaudio
 
 # ALL 2 SETS MUST BE CALLED
 def start(set_state, set_run):
     st = {}
 
-    st["MIC_RATE"] = 48000
-    st["FPS"] = 50
-
     st["p"] = pyaudio.PyAudio()
-    st["frames_per_buffer"] = st["MIC_RATE"] / st["FPS"]
+    st["DEF_INFO"] = st["p"].get_default_input_device_info()
+    st["FPS"] = 300
+    st["frames_per_buffer"] = 1024
 
     st["stream"] = st["p"].open(format=pyaudio.paInt16,
+                    input_device_index=int(st["DEF_INFO"]["index"]),
                     channels=1,
-                    rate=st["MIC_RATE"],
+                    rate=int(st["DEF_INFO"]["defaultSampleRate"]),
                     input=True,
                     frames_per_buffer=st["frames_per_buffer"])
-    
-    st["overflows"] = 0
-    st["prev_ovf_time"] = time.time()
 
-    st["y"] = 0
+    st["db"] = 0
 
     set_state(st)
     set_run(EX_RUN_DOWNTIME, st["FPS"])
@@ -32,14 +30,13 @@ def loop(state, set_run):
         y = np.fromstring(state["stream"].read(state["frames_per_buffer"], exception_on_overflow=False), dtype=np.int16)
         y = y.astype(np.float32)
         state["stream"].read(state["stream"].get_read_available(), exception_on_overflow=False)
-        state["y"] = y
+        
+        db = 20 * np.log10(np.sqrt(np.mean(np.abs(y) ** 2)))
+        if(math.isfinite(db)):
+            state["db"] = db
+        
     except:
-        state["overflows"] += 1
-        if time.time() > state["prev_ovf_time"] + 1:
-            state["prev_ovf_time"] = time.time()
-
-            num_overflows = state["overflows"]
-            print(f"Audio buffer has overflowed {num_overflows} times.")
+        pass
 
     set_run(EX_RUN_DOWNTIME, state["FPS"])
 
