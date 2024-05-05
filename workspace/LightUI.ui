@@ -548,7 +548,7 @@ QPushButton:pressed {
              <number>0</number>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="home_page">
              <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -599,10 +599,16 @@ QPushButton:pressed {
     border-left:0px;                            
     border-right:0px;                           
     background: rgb(27, 29, 35);
+}
+
+QTreeView::item
+{
+	padding: 9px;
+	height: 70px;
 }</string>
                    </property>
                    <property name="columnCount">
-                    <number>3</number>
+                    <number>2</number>
                    </property>
                    <column>
                     <property name="text">
@@ -612,11 +618,6 @@ QPushButton:pressed {
                    <column>
                     <property name="text">
                      <string notr="true">2</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text">
-                     <string notr="true">3</string>
                     </property>
                    </column>
                   </widget>
@@ -647,6 +648,40 @@ QPushButton:pressed {
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="output_clear_button">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(35, 83, 71);
+}
+QPushButton:hover {
+	background-color: rgb(33, 37, 43);
+}
+QPushButton:pressed {	
+	background-color: rgb(85, 170, 255);
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Clear Output</string>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -937,11 +972,37 @@ QPushButton:pressed {
                    <property name="maximumSize">
                     <size>
                      <width>16777215</width>
-                     <height>50</height>
+                     <height>16777215</height>
                     </size>
                    </property>
                    <property name="text">
-                    <string>Glory to Theta Chi Spring 24</string>
+                    <string>Check tutorials folder for help.
+
+Glory to Theta Chi Spring 24:
+
+Jack Andersen
+Sammy Atkins
+Shubro Biswas
+Caleb Deardorff
+Aiden Duncan
+Matt Dunlap
+Guilherme Franco
+Avi Ignaczak
+Brian Jaffa
+Nate Jeup
+Dennis Kountouris
+Mac Lewis
+Mateusz Lisiecki
+Lucas Louiso
+Burton Lu
+Trent Melinauskas
+Mason Penhallegon
+Stephen Rashevich
+Hameed Siddiqui
+Gabe Skaar
+Hassan Sufi
+Josh Thomas
+Garrett Weber</string>
                    </property>
                   </widget>
                  </item>

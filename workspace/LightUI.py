@@ -381,12 +381,17 @@ class Ui_MainWindow(object):
 "    border-left:0px;                            \n"
 "    border-right:0px;                           \n"
 "    background: rgb(27, 29, 35);\n"
+"}\n"
+"\n"
+"QTreeView::item\n"
+"{\n"
+"    padding: 9px;\n"
+"    height: 70px;\n"
 "}")
-        self.info_tree_view.setColumnCount(3)
+        self.info_tree_view.setColumnCount(2)
         self.info_tree_view.setObjectName("info_tree_view")
         self.info_tree_view.headerItem().setText(0, "1")
         self.info_tree_view.headerItem().setText(1, "2")
-        self.info_tree_view.headerItem().setText(2, "3")
         self.verticalLayout_5.addWidget(self.info_tree_view)
         self.horizontalLayout_3.addWidget(self.procedure_info)
         self.output_info = QtWidgets.QFrame(self.home_page)
@@ -400,6 +405,22 @@ class Ui_MainWindow(object):
         self.output_text_edit.setMarkdown("")
         self.output_text_edit.setObjectName("output_text_edit")
         self.verticalLayout_6.addWidget(self.output_text_edit)
+        self.output_clear_button = QtWidgets.QPushButton(self.output_info)
+        self.output_clear_button.setMinimumSize(QtCore.QSize(0, 50))
+        self.output_clear_button.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.output_clear_button.setStyleSheet("QPushButton {\n"
+"    border: none;\n"
+"    background-color: rgb(35, 83, 71);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"}")
+        self.output_clear_button.setFlat(False)
+        self.output_clear_button.setObjectName("output_clear_button")
+        self.verticalLayout_6.addWidget(self.output_clear_button)
         self.horizontalLayout_3.addWidget(self.output_info)
         self.main_display_stack.addWidget(self.home_page)
         self.procedure_page = QtWidgets.QWidget()
@@ -425,7 +446,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.procedure_sample_row = QtWidgets.QFrame(self.procedure_scroll_widgets)
         self.procedure_sample_row.setMinimumSize(QtCore.QSize(0, 80))
-        self.procedure_sample_row.setMaximumSize(QtCore.QSize(16777215, 80))
+        self.procedure_sample_row.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.procedure_sample_row.setStyleSheet("")
         self.procedure_sample_row.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.procedure_sample_row.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -445,7 +466,7 @@ class Ui_MainWindow(object):
         self.procedure_sample_content.setFrameShadow(QtWidgets.QFrame.Raised)
         self.procedure_sample_content.setObjectName("procedure_sample_content")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.procedure_sample_content)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_4.setContentsMargins(0, 0, 9, 0)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.procedure_sample_left = QtWidgets.QFrame(self.procedure_sample_content)
@@ -463,6 +484,7 @@ class Ui_MainWindow(object):
         self.procedure_sample_title.setObjectName("procedure_sample_title")
         self.verticalLayout_10.addWidget(self.procedure_sample_title)
         self.procedure_sample_desc = QtWidgets.QLabel(self.procedure_sample_left)
+        self.procedure_sample_desc.setWordWrap(True)
         self.procedure_sample_desc.setObjectName("procedure_sample_desc")
         self.verticalLayout_10.addWidget(self.procedure_sample_desc)
         self.horizontalLayout_4.addWidget(self.procedure_sample_left)
@@ -579,6 +601,7 @@ class Ui_MainWindow(object):
         self.run_page_title.setObjectName("run_page_title")
         self.verticalLayout_16.addWidget(self.run_page_title)
         self.run_page_desc = QtWidgets.QLabel(self.run_page_header)
+        self.run_page_desc.setWordWrap(True)
         self.run_page_desc.setObjectName("run_page_desc")
         self.verticalLayout_16.addWidget(self.run_page_desc)
         self.verticalLayout_13.addWidget(self.run_page_header)
@@ -588,7 +611,7 @@ class Ui_MainWindow(object):
         self.run_procedure_args_area.setWidgetResizable(True)
         self.run_procedure_args_area.setObjectName("run_procedure_args_area")
         self.args_scroll_area = QtWidgets.QWidget()
-        self.args_scroll_area.setGeometry(QtCore.QRect(0, 0, 155, 160))
+        self.args_scroll_area.setGeometry(QtCore.QRect(0, 0, 939, 480))
         self.args_scroll_area.setObjectName("args_scroll_area")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.args_scroll_area)
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
@@ -776,6 +799,7 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.output_clear_button.setText(_translate("MainWindow", "Clear Output"))
         self.procedure_sample_title.setText(_translate("MainWindow", "TextLabel"))
         self.procedure_sample_desc.setText(_translate("MainWindow", "TextLabel"))
         self.how_to_label.setText(_translate("MainWindow", "Glory to Theta Chi Spring 24"))

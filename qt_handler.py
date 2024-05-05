@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMessageBox, QColorDialog
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QLabel
 from procedure_handler import LightsProcedureColorArg, LightsProcedureSelectArg
 
 def try_quit_application(glo):
@@ -314,6 +315,13 @@ def remove_config_arg_rows_if_nec(glo):
     for arg in glo.ui.config_arg_rows:
         glo.ui.verticalLayout_14.removeWidget(arg)
 
+def generate_simple_wrap_label(text):
+    label = QLabel()
+    label.setWordWrap(True)
+    set_widget_text(label, text)
+
+    return label
+
 def set_widget_text(widget, text):
     _translate = QtCore.QCoreApplication.translate
 
@@ -345,6 +353,13 @@ def on_click_run_proc(glo):
 
     set_page_home(glo)
 
+def clear_output(glo):
+    glo.ui.output_text_edit.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>")
+
 def setup_ui(glo):
     glo.ui.home_button.clicked.connect(lambda: set_page_home(glo))
     glo.ui.action_button.clicked.connect(lambda: set_page_action(glo))
@@ -358,5 +373,8 @@ def setup_ui(glo):
 
     glo.ui.exit_app_button.clicked.connect(lambda: try_quit_application(glo))
     glo.ui.run_procedure_start_button.clicked.connect(lambda: on_click_run_proc(glo))
+
+    clear_output(glo)
+    glo.ui.output_clear_button.clicked.connect(lambda: clear_output(glo))
 
     set_page_home(glo)

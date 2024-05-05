@@ -385,11 +385,16 @@ class Ui_MainWindow(object):
 "    border-left:0px;                            \n"
 "    border-right:0px;                           \n"
 "    background: rgb(27, 29, 35);\n"
+"}\n"
+"QTreeView::item {\n"
+"    padding: 9px;\n"
+"    height: 70px; \n" 
 "}")
         self.info_tree_view.setColumnCount(2)
         self.info_tree_view.setObjectName("info_tree_view")
-        self.info_tree_view.headerItem().setText(0, "1")
-        self.info_tree_view.headerItem().setText(1, "2")
+        self.info_tree_view.headerItem().setText(0, "Name")
+        self.info_tree_view.headerItem().setText(1, "Control")
+        self.info_tree_view.header().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.verticalLayout_5.addWidget(self.info_tree_view)
         self.horizontalLayout_3.addWidget(self.procedure_info)
         self.output_info = QtWidgets.QFrame(self.home_page)
@@ -403,6 +408,22 @@ class Ui_MainWindow(object):
         self.output_text_edit.setMarkdown("")
         self.output_text_edit.setObjectName("output_text_edit")
         self.verticalLayout_6.addWidget(self.output_text_edit)
+        self.output_clear_button = QtWidgets.QPushButton(self.output_info)
+        self.output_clear_button.setMinimumSize(QtCore.QSize(0, 50))
+        self.output_clear_button.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.output_clear_button.setStyleSheet("QPushButton {\n"
+"    border: none;\n"
+"    background-color: rgb(35, 83, 71);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(33, 37, 43);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(85, 170, 255);\n"
+"}")
+        self.output_clear_button.setFlat(False)
+        self.output_clear_button.setObjectName("output_clear_button")
+        self.verticalLayout_6.addWidget(self.output_clear_button)
         self.horizontalLayout_3.addWidget(self.output_info)
         self.main_display_stack.addWidget(self.home_page)
         self.procedure_page = QtWidgets.QWidget()
@@ -447,7 +468,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.how_to_info)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
         self.how_to_label = QtWidgets.QLabel(self.how_to_info)
-        self.how_to_label.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.how_to_label.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.how_to_label.setObjectName("how_to_label")
         self.verticalLayout_12.addWidget(self.how_to_label, 0, QtCore.Qt.AlignTop)
         self.horizontalLayout_5.addWidget(self.how_to_info)
@@ -565,12 +586,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.light_controller_label.setText(_translate("MainWindow", "Light Controller"))
-        self.output_text_edit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.how_to_label.setText(_translate("MainWindow", "Glory to Theta Chi Spring 24"))
+        self.output_clear_button.setText(_translate("MainWindow", "Clear Output"))
+        self.how_to_label.setText(_translate("MainWindow", "Check tutorials folder for help.\n\nGlory to Theta Chi Spring 24:\n\nJack Andersen\nSammy Atkins\nShubro Biswas\nCaleb Deardorff\nAiden Duncan\nMatt Dunlap\nGuilherme Franco\nAvi Ignaczak\nBrian Jaffa\nNate Jeup\nDennis Kountouris\nMac Lewis\nMateusz Lisiecki\nLucas Louiso\nBurton Lu\nTrent Melinauskas\nMason Penhallegon\nStephen Rashevich\nHameed Siddiqui\nGabe Skaar\nHassan Sufi\nJosh Thomas\nGarrett Weber"))
         self.exit_app_button.setText(_translate("MainWindow", "Exit Application"))
         self.run_page_title.setText(_translate("MainWindow", "TextLabel"))
         self.run_page_desc.setText(_translate("MainWindow", "TextLabel"))

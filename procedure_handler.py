@@ -4,10 +4,18 @@ PROC_RUN_QUIT = "PROC_RUN_QUIT"
 PROC_RUN_DOWNTIME = "PROC_RUN_DOWNTIME"
 PROC_RUN_SUSPEND = "PROC_RUN_SUSPEND"
 
-class LightsProcedureInitializeEvent():
+class LightsProcedureStartEvent():
     def __init__(self, proc, args):
         self.proc = proc
         self.args = args
+
+class LightsProcedureLoopEvent():
+    def __init__(self, proc):
+        self.proc = proc
+
+class LightsProcedureStopEvent():
+    def __init__(self, proc):
+        self.proc = proc
 
 class LightsProcedure:
     def __init__(self, name, desc, domains, ex, start_fn, loop_fn, stop_fn, args):

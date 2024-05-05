@@ -2,9 +2,15 @@ from enum import Enum
 import threading
 from qt_sync import SyncWaiter
 from background_event_handler import handle_background_event
-from procedure_handler import LightsProcedureInitializeEvent
+from procedure_handler import LightsProcedureStartEvent
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 import os
+
+# updates:
+# actually pass extensions into start, loop, and stop functions of procedures
+# ^ fixed as of rn other than considering making functions in background_event_handler to better manage stop/start
+# for quick quit after start make sure to also exit the necessary extensions
+# load extensions! - as in start/stop them when procedures start/stop
 
 class BackgroundDispatchWorker(QThread):
     update_ui = pyqtSignal(object)
@@ -42,6 +48,7 @@ class LightsGlobalState:
         self.config_proc = None
 
         self.proc_states = {}
+        self.ex_states = {}
 
         self.background_dispatch_loop = SyncWaiter()
 
@@ -69,11 +76,14 @@ class LightsGlobalState:
         self.procedures.append(proc)
 
     def load_extension(self, ex):
+        if(any([loaded_ex.name == ex.name for loaded_ex in self.extensions])):
+            return
+
         self.extensions.append(ex)
 
     def quit_background_dispatch(self):
         self.background_dispatch_loop.quit()
 
     def run_procedure(self, proc, args):
-        ev = LightsProcedureInitializeEvent(proc, args)
+        ev = LightsProcedureStartEvent(proc, args)
         self.background_dispatch_loop.set(ev)
