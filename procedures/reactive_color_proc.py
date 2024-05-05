@@ -17,8 +17,8 @@ if os.name == "nt":
 
     strip_control = StripControlImitator()
 else:
-    import ws281x
-    strip_control = ws281x
+    import rpi_ws281x
+    strip_control = rpi_ws281x
 
 # set_state MUST BE CALLED
 # set_run MUST BE CALLED
