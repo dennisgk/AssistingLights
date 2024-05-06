@@ -6,7 +6,7 @@ strip_control = None
 
 if os.name == "nt":
     class StripControlImitator:
-        def Adafruit_NeoPixel(*args):
+        def PixelStrip(*args):
             return StripControlImitator()
         
         def begin(*args):
@@ -42,10 +42,10 @@ def start(set_state, set_run, args, ex):
     state["LED_INVERT"] = False
     state["LED_CHANNEL"] = 0
 
-    state["strip"] = strip_control.Adafruit_NeoPixel(state["LED_COUNT"], state["LED_PIN"], state["LED_FREQ_HZ"], state["LED_DMA"], state["LED_INVERT"], state["LED_BRIGHTNESS"], state["LED_CHANNEL"])
+    state["strip"] = strip_control.PixelStrip(state["LED_COUNT"], state["LED_PIN"], state["LED_FREQ_HZ"], state["LED_DMA"], state["LED_INVERT"], state["LED_BRIGHTNESS"], state["LED_CHANNEL"])
     state["strip"].begin()
 
-    for x in range(0, 30):
+    for x in range(0, state["LED_COUNT"]):
         state["strip"].setPixelColor(x, strip_control.Color(args["Color arg"].red(), args["Color arg"].green(), args["Color arg"].blue()))
     state["strip"].show()
 
