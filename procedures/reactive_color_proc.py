@@ -4,6 +4,10 @@ import os
 
 strip_control = None
 
+"""
+If you are using an earlier Raspberry Pi single board computer (a Raspberry Pi 3 Model B, 3B+ this has been identified for) and only one or two LEDs turn on when you run this script (and they flicker or show odd colours) do the following to fix it. Type and enter | sudo nano /boot/config.txt |. This will open up inside the terminal command a text editor. Using the arrow keys navigate to the section that states | dtparam=audio=on | and change it to | dtparam=audio=off |. With that completed press | Ctrl + X | and then | Y | to save the changes and exit.
+"""
+
 if os.name == "nt":
     class StripControlImitator:
         def PixelStrip(*args):
@@ -58,7 +62,10 @@ def loop(state, set_run, ex):
     #print("LOOPED PROC")
 
 def stop(state, ex):
-    state["strip"].fill((0, 0, 0))
+    for x in range(0, state["LED_COUNT"]):
+        state["strip"].setPixelColor(strip_control.Color(0, 0, 0))
+    
+    state["strip"].show()
 
 # LETTER LIGHTS AND PERIMETER LIGHTS ARE THE DOMAINS
 register_procedure("Reactive Color V1.0.0", "Changes the color based on sound", ["LL", "PL"])
