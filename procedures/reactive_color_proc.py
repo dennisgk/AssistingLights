@@ -63,7 +63,7 @@ def loop(state, set_run, ex):
 
 def stop(state, ex):
     for x in range(0, state["LED_COUNT"]):
-        state["strip"].setPixelColor(strip_control.Color(0, 0, 0))
+        state["strip"].setPixelColor(x, strip_control.Color(0, 0, 0))
     
     state["strip"].show()
 
