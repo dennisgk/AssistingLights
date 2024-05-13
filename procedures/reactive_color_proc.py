@@ -59,10 +59,10 @@ def start(set_state, set_run, args, ex):
 
 # set_run MUST BE CALLED
 def loop(state, set_run, ex):
-    color = [int(max(255, col * ex["Sound Listener"]["db"] / 255)) for col in state["default_color"]]
+    state["color"] = [int(max(255, col * ex["Sound Listener"]["db"] / 255)) for col in state["default_color"]]
 
     for x in range(0, state["LED_COUNT"]):
-        state["strip"].setPixelColor(x, strip_control.Color(color[0], color[1], color[2]))
+        state["strip"].setPixelColor(x, strip_control.Color(state["color"][0], state["color"][1], state["color"][2]))
     state["strip"].show()
 
     set_run(PROC_RUN_DOWNTIME, 1000)
