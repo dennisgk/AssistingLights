@@ -52,16 +52,12 @@ def start(set_state, set_run, args, ex):
     state["strip"] = strip_control.PixelStrip(state["LED_COUNT"], state["LED_PIN"], state["LED_FREQ_HZ"], state["LED_DMA"], state["LED_INVERT"], state["LED_BRIGHTNESS"], state["LED_CHANNEL"])
     state["strip"].begin()
 
-    for x in range(0, state["LED_COUNT"]):
-        state["strip"].setPixelColor(x, strip_control.Color(state["default_color"][0], state["default_color"][1], state["default_color"][2]))
-    state["strip"].show()
-
     set_state(state)
     set_run(PROC_RUN_DOWNTIME, state["FPS"])
 
 # set_run MUST BE CALLED
 def loop(state, set_run, ex):
-    adj_db = ex["Sound Listener"]["db"] - 50
+    adj_db = max(ex["Sound Listener"]["db"] - 50, 0)
     color = [int(min(255, col * adj_db / 20)) for col in state["default_color"]]
 
     for x in range(0, state["LED_COUNT"]):
